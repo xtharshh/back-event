@@ -6,6 +6,7 @@ import passport from 'passport'
 import LocalStrategy from 'passport-local'
 import dotenv from 'dotenv'
 import { User } from './models/user.model.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config({ path: ".env" })
 
@@ -18,7 +19,7 @@ app.use(express.static("public"))
 
 // ✅ CORS setup for localhost frontend (React dev server)
 app.use(cors({
-  origin: process.env.CORS_ORIGIN, // your frontend dev server
+  origin: [process.env.CORS_ORIGIN, process.env.PRODUCTION_URL], // your frontend dev server
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
 }))
@@ -95,5 +96,13 @@ import notificationRouter from './routes/notification.routes.js'
 app.use("/api/users", userRoutes)
 app.use("/api/event", eventRouter)
 app.use("/api/notify", notificationRouter)
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+      status: 'ok',
+      message: 'Server is running'
+  });
+});
 
 export default app
