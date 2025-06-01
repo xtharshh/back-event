@@ -1,5 +1,5 @@
-import { connectDB } from "./src/db/index.js";
-import app from "./src/app.js";
+import { connectDB } from "./db/index.js";
+import app from "./app.js";
 import http from 'http'
 const server = http.createServer(app)
 import express from 'express';
